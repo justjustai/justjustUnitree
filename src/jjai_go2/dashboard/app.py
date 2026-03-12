@@ -12,6 +12,9 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+import os
+import signal
+import subprocess
 import time
 from pathlib import Path
 from typing import AsyncGenerator
@@ -43,6 +46,13 @@ _registry: ServiceRegistry | None = None
 _robot: Go2Robot | None = None
 _voice_log: list[dict] = []  # Circular buffer of voice events
 _MAX_VOICE_LOG = 100
+
+# Parkour subprocess state
+_parkour_proc: subprocess.Popen | None = None
+_PARKOUR_VENV_PYTHON = "/home/unitree/parkour_venv/bin/python3"
+_PARKOUR_SCRIPT = "/home/unitree/extreme_parkour/run_parkour_dds.py"
+_PARKOUR_LOGDIR = "/home/unitree/extreme_parkour/traced"
+_PARKOUR_STATUS_FILE = "/tmp/parkour_status.json"
 
 
 def init_dashboard(bus: EventBus, registry: ServiceRegistry) -> None:
@@ -103,6 +113,90 @@ async def send_command(request: Request):
 async def get_voice_log():
     """Recent voice transcript entries."""
     return {"entries": _voice_log[-50:]}
+
+
+# --- Parkour API ---
+
+@app.post("/unitreego2/api/parkour/start")
+async def parkour_start(request: Request):
+    """Start parkour subprocess."""
+    global _parkour_proc
+
+    if _parkour_proc and _parkour_proc.poll() is None:
+        return {"success": False, "error": "Parkour already running"}
+
+    body = await request.json()
+    mode = body.get("mode", "parkour")
+    dryrun = body.get("dryrun", True)
+    camera_rotation = body.get("camera_rotation", 0)
+
+    cmd = [
+        _PARKOUR_VENV_PYTHON,
+        _PARKOUR_SCRIPT,
+        "--logdir", _PARKOUR_LOGDIR,
+        "--mode", mode,
+        "--camera-rotation", str(camera_rotation),
+        "--status-file", _PARKOUR_STATUS_FILE,
+    ]
+    if not dryrun:
+        cmd.append("--nodryrun")
+
+    env = {
+        **os.environ,
+        "LD_LIBRARY_PATH": "/home/unitree/cyclonedds_ws/install/cyclonedds/lib",
+    }
+
+    try:
+        _parkour_proc = subprocess.Popen(
+            cmd, env=env,
+            stdout=open("/tmp/parkour_stdout.log", "w"),
+            stderr=subprocess.STDOUT,
+        )
+        logger.info("Parkour started: PID=%d, mode=%s, dryrun=%s", _parkour_proc.pid, mode, dryrun)
+        return {"success": True, "pid": _parkour_proc.pid}
+    except Exception as e:
+        return {"success": False, "error": str(e)}
+
+
+@app.post("/unitreego2/api/parkour/stop")
+async def parkour_stop():
+    """Stop parkour subprocess."""
+    global _parkour_proc
+
+    if not _parkour_proc or _parkour_proc.poll() is not None:
+        _parkour_proc = None
+        return {"success": True, "message": "Not running"}
+
+    pid = _parkour_proc.pid
+    _parkour_proc.send_signal(signal.SIGTERM)
+
+    # Wait up to 3s for graceful shutdown
+    for _ in range(30):
+        if _parkour_proc.poll() is not None:
+            break
+        await asyncio.sleep(0.1)
+
+    if _parkour_proc.poll() is None:
+        _parkour_proc.kill()
+        logger.warning("Parkour PID %d force-killed", pid)
+
+    _parkour_proc = None
+    return {"success": True, "pid": pid}
+
+
+@app.get("/unitreego2/api/parkour/status")
+async def parkour_status():
+    """Read parkour status from JSON file."""
+    try:
+        with open(_PARKOUR_STATUS_FILE, "r") as f:
+            status = json.load(f)
+        age = time.time() - status.get("timestamp", 0)
+        status["stale"] = age > 3
+        return status
+    except FileNotFoundError:
+        return {"state": "idle", "stale": True}
+    except Exception as e:
+        return {"state": "error", "error": str(e), "stale": True}
 
 
 # --- SSE: Real-time status stream ---

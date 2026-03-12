@@ -273,6 +273,128 @@
             padding: 40px 0;
         }
 
+        /* Tab System */
+        .tab-bar {
+            display: flex;
+            gap: 0;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 24px;
+        }
+        .tab-btn {
+            padding: 12px 24px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.15s;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.3px;
+        }
+        .tab-btn:hover { color: var(--text-secondary); }
+        .tab-btn.active { color: var(--accent-blue); border-bottom-color: var(--accent-blue); }
+        .tab-content { display: none; }
+        .tab-content.active { display: grid; }
+        .tab-content-single.active { display: flex; }
+
+        /* Parkour Tab */
+        .parkour-layout { padding: 24px; display: flex; flex-direction: column; gap: 20px; max-width: 900px; margin: 0 auto; width: 100%; }
+
+        .parkour-header {
+            display: flex; align-items: center; justify-content: space-between;
+            background: var(--bg-secondary); border: 1px solid var(--border-color);
+            border-radius: var(--radius); padding: 16px 20px;
+        }
+        .parkour-header h2 { font-size: 18px; font-weight: 600; }
+        .parkour-badge {
+            padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .parkour-badge.idle { background: rgba(113,113,122,0.2); color: var(--text-muted); }
+        .parkour-badge.running { background: rgba(34,197,94,0.15); color: var(--accent-green); }
+        .parkour-badge.starting { background: rgba(234,179,8,0.15); color: var(--accent-yellow); }
+        .parkour-badge.error { background: rgba(239,68,68,0.15); color: var(--accent-red); }
+
+        .parkour-controls {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+            background: var(--bg-secondary); border: 1px solid var(--border-color);
+            border-radius: var(--radius); padding: 20px;
+        }
+        .parkour-control-group { display: flex; flex-direction: column; gap: 8px; }
+        .parkour-control-group label { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        .parkour-radio-group { display: flex; gap: 6px; }
+        .parkour-radio {
+            padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 500;
+            background: var(--bg-tertiary); border: 1px solid var(--border-color);
+            color: var(--text-secondary); cursor: pointer; transition: all 0.15s;
+            font-family: 'Inter', sans-serif;
+        }
+        .parkour-radio:hover { border-color: var(--accent-blue); }
+        .parkour-radio.selected { background: rgba(59,130,246,0.15); border-color: var(--accent-blue); color: var(--accent-blue); }
+        .parkour-checkbox {
+            display: flex; align-items: center; gap: 8px; font-size: 13px;
+            color: var(--text-secondary); cursor: pointer;
+        }
+        .parkour-checkbox input { width: 16px; height: 16px; accent-color: var(--accent-blue); }
+
+        .parkour-actions { display: flex; gap: 12px; }
+        .parkour-btn {
+            flex: 1; padding: 14px 20px; border-radius: 10px; font-size: 14px; font-weight: 600;
+            border: none; cursor: pointer; transition: all 0.15s; font-family: 'Inter', sans-serif;
+        }
+        .parkour-btn:active { transform: scale(0.97); }
+        .parkour-btn.start { background: var(--accent-green); color: #000; }
+        .parkour-btn.start:hover { background: #16a34a; }
+        .parkour-btn.start:disabled { background: #374151; color: var(--text-muted); cursor: not-allowed; transform: none; }
+        .parkour-btn.stop { background: var(--accent-red); color: #fff; }
+        .parkour-btn.stop:hover { background: #dc2626; }
+        .parkour-btn.stop:disabled { background: #374151; color: var(--text-muted); cursor: not-allowed; transform: none; }
+
+        .parkour-stats {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+            background: var(--bg-secondary); border: 1px solid var(--border-color);
+            border-radius: var(--radius); padding: 20px;
+        }
+
+        .motor-temps-section {
+            background: var(--bg-secondary); border: 1px solid var(--border-color);
+            border-radius: var(--radius); padding: 20px;
+        }
+        .motor-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-top: 12px; }
+        .motor-cell {
+            text-align: center; padding: 8px 4px; border-radius: 6px;
+            background: var(--bg-tertiary); border: 1px solid var(--border-color);
+            font-family: 'JetBrains Mono', monospace; font-size: 12px;
+        }
+        .motor-cell .motor-label { font-size: 10px; color: var(--text-muted); margin-bottom: 2px; }
+        .motor-cell.hot { border-color: var(--accent-yellow); }
+        .motor-cell.danger { border-color: var(--accent-red); background: rgba(239,68,68,0.1); }
+
+        .parkour-gamepad {
+            background: var(--bg-secondary); border: 1px solid var(--border-color);
+            border-radius: var(--radius); padding: 20px;
+        }
+        .gamepad-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+        .gamepad-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-secondary); }
+        .gamepad-key {
+            padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600;
+            background: var(--bg-tertiary); border: 1px solid var(--border-color);
+            font-family: 'JetBrains Mono', monospace; min-width: 36px; text-align: center;
+        }
+
+        .parkour-log-section {
+            background: var(--bg-secondary); border: 1px solid var(--border-color);
+            border-radius: var(--radius); padding: 20px; max-height: 200px; overflow-y: auto;
+        }
+        .parkour-log-entry {
+            font-family: 'JetBrains Mono', monospace; font-size: 12px;
+            color: var(--text-secondary); padding: 3px 0;
+        }
+        .parkour-log-entry .ts { color: var(--text-muted); }
+
         /* Toast */
         .toast {
             position: fixed;
@@ -309,7 +431,14 @@
         </div>
     </div>
 
-    <div class="main">
+    <!-- Tab Bar -->
+    <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchTab('control')">Control</button>
+        <button class="tab-btn" onclick="switchTab('parkour')">Parkour</button>
+    </div>
+
+    <!-- Tab: Control (original layout) -->
+    <div class="main tab-content active" id="tab-control">
         <!-- Left Sidebar: Status + Commands -->
         <div class="sidebar">
             <!-- Status -->
@@ -424,6 +553,107 @@
                 <div class="voice-empty" id="voice-empty">
                     Voice transcript will appear here when the voice agent is active.
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tab: Parkour -->
+    <div class="tab-content-single" id="tab-parkour">
+        <div class="parkour-layout">
+            <!-- Header -->
+            <div class="parkour-header">
+                <h2>Parkour Mode</h2>
+                <span class="parkour-badge idle" id="pk-badge">IDLE</span>
+            </div>
+
+            <!-- Controls -->
+            <div class="parkour-controls">
+                <div class="parkour-control-group">
+                    <label>Mode</label>
+                    <div class="parkour-radio-group">
+                        <button class="parkour-radio selected" onclick="setPkMode(this,'parkour')">Parkour</button>
+                        <button class="parkour-radio" onclick="setPkMode(this,'walk')">Walk</button>
+                    </div>
+                </div>
+                <div class="parkour-control-group">
+                    <label>Camera Rotation</label>
+                    <div class="parkour-radio-group">
+                        <button class="parkour-radio selected" onclick="setPkRotation(this,0)">0</button>
+                        <button class="parkour-radio" onclick="setPkRotation(this,90)">90</button>
+                        <button class="parkour-radio" onclick="setPkRotation(this,180)">180</button>
+                        <button class="parkour-radio" onclick="setPkRotation(this,270)">270</button>
+                    </div>
+                </div>
+                <div class="parkour-control-group">
+                    <label class="parkour-checkbox">
+                        <input type="checkbox" id="pk-dryrun" checked> Dry Run (no motor commands)
+                    </label>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="parkour-actions">
+                <button class="parkour-btn start" id="pk-start" onclick="parkourStart()">START PARKOUR</button>
+                <button class="parkour-btn stop" id="pk-stop" onclick="parkourStop()" disabled>STOP PARKOUR</button>
+            </div>
+
+            <!-- Live Stats -->
+            <div class="parkour-stats">
+                <div class="stat-card">
+                    <div class="stat-label">Policy FPS</div>
+                    <div class="stat-value blue" id="pk-policy-fps">--</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Depth FPS</div>
+                    <div class="stat-value blue" id="pk-depth-fps">--</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Elapsed</div>
+                    <div class="stat-value" id="pk-elapsed">--</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Battery</div>
+                    <div class="stat-value green" id="pk-battery">--</div>
+                </div>
+            </div>
+
+            <!-- Motor Temps -->
+            <div class="motor-temps-section">
+                <div class="section-title">Motor Temperatures</div>
+                <div class="motor-grid" id="pk-motors">
+                    <div class="motor-cell"><div class="motor-label">FR0</div><span>--</span></div>
+                    <div class="motor-cell"><div class="motor-label">FR1</div><span>--</span></div>
+                    <div class="motor-cell"><div class="motor-label">FR2</div><span>--</span></div>
+                    <div class="motor-cell"><div class="motor-label">FL0</div><span>--</span></div>
+                    <div class="motor-cell"><div class="motor-label">FL1</div><span>--</span></div>
+                    <div class="motor-cell"><div class="motor-label">FL2</div><span>--</span></div>
+                    <div class="motor-cell"><div class="motor-label">RR0</div><span>--</span></div>
+                    <div class="motor-cell"><div class="motor-label">RR1</div><span>--</span></div>
+                    <div class="motor-cell"><div class="motor-label">RR2</div><span>--</span></div>
+                    <div class="motor-cell"><div class="motor-label">RL0</div><span>--</span></div>
+                    <div class="motor-cell"><div class="motor-label">RL1</div><span>--</span></div>
+                    <div class="motor-cell"><div class="motor-label">RL2</div><span>--</span></div>
+                </div>
+            </div>
+
+            <!-- Gamepad Reference -->
+            <div class="parkour-gamepad">
+                <div class="section-title">Gamepad Controls</div>
+                <div class="gamepad-grid">
+                    <div class="gamepad-item"><span class="gamepad-key">R1</span> Stand Up</div>
+                    <div class="gamepad-item"><span class="gamepad-key">L1</span> Disable Sport Mode</div>
+                    <div class="gamepad-item"><span class="gamepad-key">R2</span> Sit Down</div>
+                    <div class="gamepad-item"><span class="gamepad-key">Y</span> Start Parkour Policy</div>
+                    <div class="gamepad-item"><span class="gamepad-key">X</span> Balance Stand</div>
+                    <div class="gamepad-item"><span class="gamepad-key">L2</span> Exit Parkour</div>
+                    <div class="gamepad-item"><span class="gamepad-key">L1+L2</span> Emergency Stop</div>
+                </div>
+            </div>
+
+            <!-- Log -->
+            <div class="parkour-log-section">
+                <div class="section-title">Log</div>
+                <div id="pk-log"></div>
             </div>
         </div>
     </div>
@@ -566,6 +796,116 @@
 
         // Start WebSocket
         connectWS();
+
+        // ---- Tab System ----
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content, .tab-content-single').forEach(t => t.classList.remove('active'));
+            document.querySelector(`[onclick="switchTab('${tab}')"]`).classList.add('active');
+            document.getElementById('tab-' + tab).classList.add('active');
+
+            if (tab === 'parkour') { startParkourPolling(); }
+            else { stopParkourPolling(); }
+        }
+
+        // ---- Parkour Controls ----
+        let pkMode = 'parkour';
+        let pkRotation = 0;
+        let pkPollInterval = null;
+
+        function setPkMode(btn, mode) {
+            pkMode = mode;
+            btn.closest('.parkour-radio-group').querySelectorAll('.parkour-radio').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+        }
+        function setPkRotation(btn, rot) {
+            pkRotation = rot;
+            btn.closest('.parkour-radio-group').querySelectorAll('.parkour-radio').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+        }
+
+        function parkourStart() {
+            const dryrun = document.getElementById('pk-dryrun').checked;
+            fetch('/unitreego2/api/parkour/start', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({mode: pkMode, dryrun: dryrun, camera_rotation: pkRotation})
+            }).then(r => r.json()).then(d => {
+                if (d.success) {
+                    showToast('Parkour started (PID: ' + d.pid + ')', 'success');
+                    pkLog('Started ' + pkMode + ' mode' + (dryrun ? ' (dryrun)' : ' (LIVE)'));
+                    document.getElementById('pk-start').disabled = true;
+                    document.getElementById('pk-stop').disabled = false;
+                } else {
+                    showToast('Start failed: ' + d.error, 'error');
+                }
+            }).catch(e => showToast('Error: ' + e, 'error'));
+        }
+
+        function parkourStop() {
+            fetch('/unitreego2/api/parkour/stop', {method: 'POST'})
+            .then(r => r.json()).then(d => {
+                showToast('Parkour stopped', 'success');
+                pkLog('Stopped');
+                document.getElementById('pk-start').disabled = false;
+                document.getElementById('pk-stop').disabled = true;
+            }).catch(e => showToast('Error: ' + e, 'error'));
+        }
+
+        function startParkourPolling() {
+            if (pkPollInterval) return;
+            pollParkourStatus();
+            pkPollInterval = setInterval(pollParkourStatus, 1000);
+        }
+        function stopParkourPolling() {
+            if (pkPollInterval) { clearInterval(pkPollInterval); pkPollInterval = null; }
+        }
+
+        function pollParkourStatus() {
+            fetch('/unitreego2/api/parkour/status').then(r => r.json()).then(d => {
+                const badge = document.getElementById('pk-badge');
+                const state = d.state || 'idle';
+                badge.textContent = state.toUpperCase();
+                badge.className = 'parkour-badge ' + (state === 'parkour' || state === 'walk' || state === 'sport' ? 'running' : state === 'starting' ? 'starting' : state === 'error' ? 'error' : 'idle');
+
+                const isRunning = ['parkour','walk','sport','starting'].includes(state);
+                document.getElementById('pk-start').disabled = isRunning;
+                document.getElementById('pk-stop').disabled = !isRunning;
+
+                document.getElementById('pk-policy-fps').textContent = d.fps !== undefined ? d.fps : '--';
+                document.getElementById('pk-depth-fps').textContent = d.depth_fps !== undefined ? d.depth_fps : '--';
+                document.getElementById('pk-elapsed').textContent = d.elapsed_s !== undefined ? d.elapsed_s + 's' : '--';
+
+                const batEl = document.getElementById('pk-battery');
+                if (d.battery !== undefined) {
+                    batEl.textContent = d.battery + '%';
+                    batEl.className = 'stat-value ' + (d.battery < 20 ? 'red' : d.battery < 50 ? 'yellow' : 'green');
+                }
+
+                // Motor temps
+                const motorLabels = ['FR0','FR1','FR2','FL0','FL1','FL2','RR0','RR1','RR2','RL0','RL1','RL2'];
+                const cells = document.getElementById('pk-motors').children;
+                if (d.motor_temps && d.motor_temps.length === 12) {
+                    for (let i = 0; i < 12; i++) {
+                        const t = d.motor_temps[i];
+                        cells[i].querySelector('span').textContent = t + '\u00B0';
+                        cells[i].className = 'motor-cell' + (t > 70 ? ' danger' : t > 50 ? ' hot' : '');
+                    }
+                }
+
+                if (d.error) pkLog('ERROR: ' + d.error);
+            }).catch(() => {});
+        }
+
+        function pkLog(msg) {
+            const log = document.getElementById('pk-log');
+            const ts = new Date().toLocaleTimeString();
+            const entry = document.createElement('div');
+            entry.className = 'parkour-log-entry';
+            entry.innerHTML = '<span class="ts">[' + ts + ']</span> ' + msg;
+            log.appendChild(entry);
+            log.parentElement.scrollTop = log.parentElement.scrollHeight;
+        }
     </script>
 </body>
 </html>
